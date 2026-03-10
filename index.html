@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog</title>
+  <meta name="description" content="Personal technical blog" />
+
+  <!-- marked.js for markdown parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --ink-soft: #4a4a44;
+      --ink-faint: #9a9a90;
+      --paper: #faf9f6;
+      --paper-warm: #f2f0eb;
+      --rule: #e2e0d8;
+      --accent: #c0392b;
+      --accent-soft: #e8d5d2;
+      --max: 680px;
+      --mono: 'JetBrains Mono', monospace;
+      --serif: 'Lora', Georgia, serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    html { font-size: 18px; }
+
+    body {
+      font-family: var(--serif);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.75;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .site-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 3.5rem;
+    }
+
+    .site-name {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+    }
+
+    .site-name:hover { color: var(--accent); }
+
+    .site-tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--ink-soft);
+    }
+
+    .site-nav {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover, .nav-link.active { color: var(--accent); }
+
+    /* ── Page views ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Post list ── */
+    .post-list { list-style: none; }
+
+    .post-item {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rule);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.4s forwards;
+    }
+
+    .post-item:first-child { padding-top: 0; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-meta {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .post-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.1em 0.5em;
+      background: var(--paper-warm);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .tag:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .post-title-link {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .post-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 0.5rem;
+      transition: color 0.15s;
+    }
+
+    .post-title-link:hover .post-title { color: var(--accent); }
+
+    .post-description {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .read-more:hover { opacity: 0.7; }
+
+    /* ── Post content ── */
+    .post-full { animation: fadeUp 0.3s forwards; opacity: 0; }
+
+    .post-full-header {
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 2.5rem;
+    }
+
+    .post-full-meta {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .post-full-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .post-full-description {
+      font-style: italic;
+      color: var(--ink-soft);
+      font-size: 1rem;
+    }
+
+    /* ── Markdown content styles ── */
+    .post-body { font-size: 1rem; }
+
+    .post-body h2 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin: 2.5rem 0 0.75rem;
+      padding-top: 0.5rem;
+    }
+
+    .post-body h3 {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 2rem 0 0.5rem;
+      color: var(--ink-soft);
+    }
+
+    .post-body p { margin-bottom: 1.4rem; }
+
+    .post-body a { color: var(--accent); text-underline-offset: 3px; }
+
+    .post-body strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .post-body em { font-style: italic; }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.4rem 1.5rem;
+    }
+
+    .post-body li { margin-bottom: 0.3rem; }
+
+    .post-body blockquote {
+      margin: 2rem 0;
+      padding: 1rem 1.5rem;
+      border-left: 3px solid var(--accent);
+      background: var(--paper-warm);
+      font-style: italic;
+      color: var(--ink-soft);
+    }
+
+    .post-body code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      background: var(--paper-warm);
+      border: 1px solid var(--rule);
+      padding: 0.1em 0.4em;
+      border-radius: 2px;
+    }
+
+    .post-body pre {
+      margin: 1.5rem 0;
+      padding: 1.25rem 1.5rem;
+      background: var(--ink);
+      color: #e8e6df;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.82rem;
+      color: inherit;
+    }
+
+    .post-body hr {
+      margin: 2.5rem 0;
+      border: none;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      cursor: pointer;
+      margin-bottom: 3rem;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .back-btn:hover { color: var(--accent); }
+
+    .back-btn::before { content: '←'; }
+
+    /* ── About page ── */
+    .about-content {
+      animation: fadeUp 0.3s forwards;
+      opacity: 0;
+    }
+
+    .about-content h1 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-content p {
+      color: var(--ink-soft);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-content a { color: var(--accent); text-underline-offset: 3px; }
+
+    /* ── Footer ── */
+    .site-footer {
+      margin-top: 6rem;
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-text {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-link {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-link:hover { color: var(--accent); }
+
+    /* ── Loading / Error ── */
+    .loading {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+      padding: 3rem 0;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-left: 6px;
+      animation: pulse 1s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      html { font-size: 16px; }
+      .site-header { padding: 2.5rem 0 2rem; }
+      .post-full-title { font-size: 1.6rem; }
+    }
+
+    /* ── Stagger animations ── */
+    .post-item:nth-child(1) { animation-delay: 0.05s; }
+    .post-item:nth-child(2) { animation-delay: 0.1s; }
+    .post-item:nth-child(3) { animation-delay: 0.15s; }
+    .post-item:nth-child(4) { animation-delay: 0.2s; }
+    .post-item:nth-child(5) { animation-delay: 0.25s; }
+    .post-item:nth-child(n+6) { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+<div class="site-wrap">
+
+  <!-- Header -->
+  <header class="site-header">
+    <a class="site-name" onclick="showView('list')">Jero Hao</a>
+    <p class="site-tagline">Notes on building things.</p>
+    <nav class="site-nav">
+      <a class="nav-link active" id="nav-writing" onclick="showView('list')">Writing</a>
+      <a class="nav-link" id="nav-about" onclick="showView('about')">About</a>
+    </nav>
+  </header>
+
+  <!-- Post List View -->
+  <main class="view active" id="view-list">
+    <div id="post-list-container">
+      <p class="loading">Loading posts</p>
+    </div>
+  </main>
+
+  <!-- Post Detail View -->
+  <main class="view" id="view-post">
+    <button class="back-btn" onclick="showView('list')">All posts</button>
+    <article class="post-full" id="post-full-content"></article>
+  </main>
+
+  <!-- About View -->
+  <main class="view" id="view-about">
+    <div class="about-content">
+      <h1>About</h1>
+      <p>
+        I'm a software engineer writing about the things I'm building, learning, and thinking about.
+      </p>
+      <p>
+        This blog is a place for long-form notes — not announcements, not tutorials optimized for SEO, just thinking out loud.
+      </p>
+      <p>
+        You can find me on <a href="https://github.com/" target="_blank">GitHub</a>.
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <span class="footer-text">© <span id="year"></span> Jero Hao</span>
+    <div class="footer-links">
+      <a class="footer-link" href="https://github.com/" target="_blank">GitHub</a>
+      <a class="footer-link" href="/feed.xml">RSS</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG — edit these
+// ─────────────────────────────────────────────
+const CONFIG = {
+  siteName: "your.name",
+  tagline: "Notes on building things.",
+  githubUser: "yourusername",
+  githubRepo: "yourusername.github.io",
+  // Branch where posts/ folder lives
+  branch: "main",
+};
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// ─────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────
+let allPosts = [];
+let currentView = 'list';
+
+// ─────────────────────────────────────────────
+// View management
+// ─────────────────────────────────────────────
+function showView(name, slug) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+  if (name === 'list') {
+    document.getElementById('view-list').classList.add('active');
+    document.getElementById('nav-writing').classList.add('active');
+    history.pushState({}, '', '/');
+  } else if (name === 'post' && slug) {
+    document.getElementById('view-post').classList.add('active');
+    document.getElementById('nav-writing').classList.add('active');
+    history.pushState({}, '', `#${slug}`);
+    loadPost(slug);
+  } else if (name === 'about') {
+    document.getElementById('view-about').classList.add('active');
+    document.getElementById('nav-about').classList.add('active');
+    history.pushState({}, '', '#about');
+  }
+}
+
+// ─────────────────────────────────────────────
+// Markdown front matter parser
+// ─────────────────────────────────────────────
+function parseFrontMatter(raw) {
+  const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+  if (!match) return { meta: {}, body: raw };
+
+  const meta = {};
+  match[1].split('\n').forEach(line => {
+    const [key, ...rest] = line.split(':');
+    if (!key) return;
+    let val = rest.join(':').trim();
+    // Parse arrays like [a, b, c] or ["a", "b"]
+    if (val.startsWith('[')) {
+      val = val.slice(1, -1).split(',').map(s => s.trim().replace(/['"]/g, ''));
+    }
+    meta[key.trim()] = val;
+  });
+
+  return { meta, body: match[2].trim() };
+}
+
+// ─────────────────────────────────────────────
+// Format date
+// ─────────────────────────────────────────────
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// ─────────────────────────────────────────────
+// Estimate reading time
+// ─────────────────────────────────────────────
+function readingTime(text) {
+  const words = text.trim().split(/\s+/).length;
+  const mins = Math.max(1, Math.round(words / 200));
+  return `${mins} min read`;
+}
+
+// ─────────────────────────────────────────────
+// Fetch posts list from GitHub API or local
+// ─────────────────────────────────────────────
+async function fetchPostsList() {
+  // Try GitHub API first (works on GitHub Pages)
+  const apiUrl = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.githubRepo}/contents/posts?ref=${CONFIG.branch}`;
+
+  try {
+    const res = await fetch(apiUrl);
+    if (res.ok) {
+      const files = await res.json();
+      return files
+        .filter(f => f.name.endsWith('.md'))
+        .map(f => f.name);
+    }
+  } catch (e) { /* fall through to local */ }
+
+  // Local fallback: fetch posts/index.json
+  try {
+    const res = await fetch('posts/index.json');
+    if (res.ok) {
+      const data = await res.json();
+      return data.posts || [];
+    }
+  } catch (e) { /* fall through */ }
+
+  // Hard-coded fallback for development
+  return [
+    '2024-03-20-the-80-percent-problem.md',
+    '2024-02-03-writing-documentation.md',
+    '2024-01-15-hello-world.md',
+  ];
+}
+
+// ─────────────────────────────────────────────
+// Fetch a single post markdown file
+// ─────────────────────────────────────────────
+async function fetchPostMd(filename) {
+  const res = await fetch(`posts/${filename}`);
+  if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
+  return res.text();
+}
+
+// ─────────────────────────────────────────────
+// Load and render post list
+// ─────────────────────────────────────────────
+async function loadPostList() {
+  const container = document.getElementById('post-list-container');
+
+  try {
+    const filenames = await fetchPostsList();
+    const posts = await Promise.all(
+      filenames.map(async filename => {
+        try {
+          const raw = await fetchPostMd(filename);
+          const { meta, body } = parseFrontMatter(raw);
+          const slug = filename.replace('.md', '');
+          return { slug, filename, meta, body, raw };
+        } catch { return null; }
+      })
+    );
+
+    allPosts = posts
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.meta.date) - new Date(a.meta.date));
+
+    if (allPosts.length === 0) {
+      container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">No posts yet.</p>`;
+      return;
+    }
+
+    const ul = document.createElement('ul');
+    ul.className = 'post-list';
+
+    allPosts.forEach(post => {
+      const li = document.createElement('li');
+      li.className = 'post-item';
+
+      const tagsHtml = Array.isArray(post.meta.tags)
+        ? post.meta.tags.map(t => `<span class="tag">${t}</span>`).join('')
+        : '';
+
+      li.innerHTML = `
+        <div class="post-meta">
+          <span>${formatDate(post.meta.date)}</span>
+          ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
+        </div>
+        <a class="post-title-link" onclick="showView('post', '${post.slug}')">
+          <h2 class="post-title">${post.meta.title || post.slug}</h2>
+        </a>
+        ${post.meta.description ? `<p class="post-description">${post.meta.description}</p>` : ''}
+        <a class="read-more" onclick="showView('post', '${post.slug}')">Read → ${readingTime(post.body)}</a>
+      `;
+
+      ul.appendChild(li);
+    });
+
+    container.innerHTML = '';
+    container.appendChild(ul);
+
+  } catch (err) {
+    container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">Could not load posts. ${err.message}</p>`;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Load and render single post
+// ─────────────────────────────────────────────
+async function loadPost(slug) {
+  const container = document.getElementById('post-full-content');
+  container.innerHTML = '<p class="loading">Loading</p>';
+
+  // Find from cache
+  let post = allPosts.find(p => p.slug === slug);
+
+  if (!post) {
+    try {
+      const filename = `${slug}.md`;
+      const raw = await fetchPostMd(filename);
+      const { meta, body } = parseFrontMatter(raw);
+      post = { slug, filename, meta, body, raw };
+    } catch {
+      container.innerHTML = '<p style="color:var(--ink-faint)">Post not found.</p>';
+      return;
+    }
+  }
+
+  const tagsHtml = Array.isArray(post.meta.tags)
+    ? post.meta.tags.map(t => `<span class="tag">${t}</span>`).join('')
+    : '';
+
+  const bodyHtml = marked.parse(post.body);
+
+  container.className = 'post-full';
+  container.innerHTML = `
+    <header class="post-full-header">
+      <div class="post-full-meta">
+        <span>${formatDate(post.meta.date)}</span>
+        <span>${readingTime(post.body)}</span>
+        ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
+      </div>
+      <h1 class="post-full-title">${post.meta.title || slug}</h1>
+      ${post.meta.description ? `<p class="post-full-description">${post.meta.description}</p>` : ''}
+    </header>
+    <div class="post-body">${bodyHtml}</div>
+  `;
+
+  window.scrollTo(0, 0);
+}
+
+// ─────────────────────────────────────────────
+// Handle hash-based routing
+// ─────────────────────────────────────────────
+function routeFromHash() {
+  const hash = window.location.hash.slice(1);
+  if (!hash || hash === '/') {
+    showView('list');
+  } else if (hash === 'about') {
+    showView('about');
+  } else {
+    showView('post', hash);
+  }
+}
+
+window.addEventListener('popstate', routeFromHash);
+
+// ─────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────
+loadPostList().then(() => {
+  routeFromHash();
+});
+</script>
+
+</body>
+</html>
