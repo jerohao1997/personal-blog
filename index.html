@@ -469,7 +469,7 @@
   <footer class="site-footer">
     <span class="footer-text">© <span id="year"></span> Jero Hao</span>
     <div class="footer-links">
-      <a class="footer-link" href="https://github.com/" target="_blank">GitHub</a>
+      <a class="footer-link" href="https://github.com/jerohao1997" target="_blank">GitHub</a>
       <a class="footer-link" href="/feed.xml">RSS</a>
     </div>
   </footer>
@@ -481,12 +481,13 @@
 // CONFIG — edit these
 // ─────────────────────────────────────────────
 const CONFIG = {
-  siteName: "your.name",
+  siteName: "Jero Hao",
   tagline: "Notes on building things.",
-  githubUser: "yourusername",
-  githubRepo: "yourusername.github.io",
-  // Branch where posts/ folder lives
+  githubUser: "jerohao1997",
+  githubRepo: "personal-blog",
   branch: "main",
+  // Base path: "/" for username.github.io, or "/repo-name" for project pages
+  basePath: "/personal-blog",
 };
 
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -507,7 +508,7 @@ function showView(name, slug) {
   if (name === 'list') {
     document.getElementById('view-list').classList.add('active');
     document.getElementById('nav-writing').classList.add('active');
-    history.pushState({}, '', '/');
+    history.pushState({}, '', CONFIG.basePath || '/');
   } else if (name === 'post' && slug) {
     document.getElementById('view-post').classList.add('active');
     document.getElementById('nav-writing').classList.add('active');
@@ -561,32 +562,35 @@ function readingTime(text) {
 }
 
 // ─────────────────────────────────────────────
-// Fetch posts list from GitHub API or local
+// Fetch posts list — tries 3 strategies in order
 // ─────────────────────────────────────────────
 async function fetchPostsList() {
-  // Try GitHub API first (works on GitHub Pages)
+  // 1. GitHub Contents API — auto-discovers new posts, no index.json needed
   const apiUrl = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.githubRepo}/contents/posts?ref=${CONFIG.branch}`;
-
   try {
     const res = await fetch(apiUrl);
     if (res.ok) {
       const files = await res.json();
-      return files
-        .filter(f => f.name.endsWith('.md'))
-        .map(f => f.name);
+      if (Array.isArray(files)) {
+        return files
+          .filter(f => f.name.endsWith('.md'))
+          .map(f => f.name)
+          .sort().reverse(); // YYYY-MM-DD prefix → newest first
+      }
     }
-  } catch (e) { /* fall through to local */ }
+  } catch (e) { /* fall through */ }
 
-  // Local fallback: fetch posts/index.json
+  // 2. posts/index.json — maintained by GitHub Action or manually
   try {
-    const res = await fetch('posts/index.json');
+    const base = CONFIG.basePath || '';
+    const res = await fetch(`${base}/posts/index.json`);
     if (res.ok) {
       const data = await res.json();
       return data.posts || [];
     }
   } catch (e) { /* fall through */ }
 
-  // Hard-coded fallback for development
+  // 3. Hard-coded fallback
   return [
     '2024-03-20-the-80-percent-problem.md',
     '2024-02-03-writing-documentation.md',
@@ -598,7 +602,8 @@ async function fetchPostsList() {
 // Fetch a single post markdown file
 // ─────────────────────────────────────────────
 async function fetchPostMd(filename) {
-  const res = await fetch(`posts/${filename}`);
+  const base = CONFIG.basePath || '';
+  const res = await fetch(`${base}/posts/${filename}`);
   if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
   return res.text();
 }
