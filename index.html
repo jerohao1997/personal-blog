@@ -582,15 +582,18 @@ async function fetchPostsList() {
 
   // 2. posts/index.json — maintained by GitHub Action or manually
   try {
+    // Use absolute URL to avoid subpath resolution issues
+    const origin = window.location.origin;
     const base = CONFIG.basePath || '';
-    const res = await fetch(`${base}/posts/index.json`);
+    const res = await fetch(`${origin}${base}/posts/index.json`);
     if (res.ok) {
       const data = await res.json();
       return data.posts || [];
     }
   } catch (e) { /* fall through */ }
 
-  // 3. Hard-coded fallback
+  // 3. Hard-coded fallback — always works, update this list when you add posts
+  //    (this is only used if the GitHub API AND index.json both fail)
   return [
     '2024-03-20-the-80-percent-problem.md',
     '2024-02-03-writing-documentation.md',
@@ -602,8 +605,9 @@ async function fetchPostsList() {
 // Fetch a single post markdown file
 // ─────────────────────────────────────────────
 async function fetchPostMd(filename) {
+  const origin = window.location.origin;
   const base = CONFIG.basePath || '';
-  const res = await fetch(`${base}/posts/${filename}`);
+  const res = await fetch(`${origin}${base}/posts/${filename}`);
   if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
   return res.text();
 }
