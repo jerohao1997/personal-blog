@@ -565,35 +565,42 @@ function readingTime(text) {
 // Fetch posts list — tries 3 strategies in order
 // ─────────────────────────────────────────────
 async function fetchPostsList() {
-  // 1. GitHub Contents API — auto-discovers new posts, no index.json needed
+  const log = (msg) => console.log('[blog]', msg);
+
+  // 1. GitHub Contents API
   const apiUrl = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.githubRepo}/contents/posts?ref=${CONFIG.branch}`;
+  log('Trying GitHub API: ' + apiUrl);
   try {
     const res = await fetch(apiUrl);
+    log('GitHub API status: ' + res.status);
     if (res.ok) {
       const files = await res.json();
       if (Array.isArray(files)) {
-        return files
-          .filter(f => f.name.endsWith('.md'))
-          .map(f => f.name)
-          .sort().reverse(); // YYYY-MM-DD prefix → newest first
+        const names = files.filter(f => f.name.endsWith('.md')).map(f => f.name).sort().reverse();
+        log('GitHub API found: ' + names.join(', '));
+        return names;
+      } else {
+        log('GitHub API non-array response: ' + JSON.stringify(files).slice(0, 300));
       }
     }
-  } catch (e) { /* fall through */ }
+  } catch (e) { log('GitHub API error: ' + e.message); }
 
-  // 2. posts/index.json — maintained by GitHub Action or manually
+  // 2. posts/index.json
+  const indexUrl = `${window.location.origin}${CONFIG.basePath || ''}/posts/index.json`;
+  log('Trying index.json: ' + indexUrl);
   try {
-    // Use absolute URL to avoid subpath resolution issues
-    const origin = window.location.origin;
-    const base = CONFIG.basePath || '';
-    const res = await fetch(`${origin}${base}/posts/index.json`);
+    const res = await fetch(indexUrl);
+    log('index.json status: ' + res.status);
     if (res.ok) {
-      const data = await res.json();
+      const text = await res.text();
+      log('index.json raw: ' + text.slice(0, 300));
+      const data = JSON.parse(text);
       return data.posts || [];
     }
-  } catch (e) { /* fall through */ }
+  } catch (e) { log('index.json error: ' + e.message); }
 
-  // 3. Hard-coded fallback — always works, update this list when you add posts
-  //    (this is only used if the GitHub API AND index.json both fail)
+  // 3. Hard-coded fallback
+  log('Using hard-coded fallback list');
   return [
     '2024-03-20-the-80-percent-problem.md',
     '2024-02-03-writing-documentation.md',
@@ -618,6 +625,20 @@ async function fetchPostMd(filename) {
 async function loadPostList() {
   const container = document.getElementById('post-list-container');
 
+  // DEBUG — remove once posts are showing
+  const debug = (msg, isErr) => {
+    const el = document.createElement('p');
+    el.style.cssText = 'font-family:monospace;font-size:12px;margin:4px 0;color:' + (isErr ? '#c0392b' : '#888');
+    el.textContent = msg;
+    container.appendChild(el);
+  };
+  container.innerHTML = '<p style="font-family:monospace;font-size:12px;color:#888">Debug log:</p>';
+
+  debug('origin: ' + window.location.origin);
+  debug('basePath: ' + CONFIG.basePath);
+  debug('githubUser: ' + CONFIG.githubUser);
+  debug('githubRepo: ' + CONFIG.githubRepo);
+
   try {
     const filenames = await fetchPostsList();
     const posts = await Promise.all(
@@ -635,8 +656,11 @@ async function loadPostList() {
       .filter(Boolean)
       .sort((a, b) => new Date(b.meta.date) - new Date(a.meta.date));
 
+    debug(`fetchPostsList returned ${filenames.length} filenames`);
+    debug(`Successfully loaded ${allPosts.length} posts`);
+
     if (allPosts.length === 0) {
-      container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">No posts yet.</p>`;
+      container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">No posts yet. Check browser console (F12) for debug logs.</p>`;
       return;
     }
 
