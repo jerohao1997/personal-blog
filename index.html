@@ -433,6 +433,7 @@
     <nav class="site-nav">
       <a class="nav-link active" id="nav-writing" onclick="showView('list')">Writing</a>
       <a class="nav-link" id="nav-about" onclick="showView('about')">About</a>
+      <a class="nav-link" id="nav-friends" onclick="showView('friends')">友情链接</a>
     </nav>
   </header>
 
@@ -462,6 +463,16 @@
       <p>
         You can find me on <a href="https://github.com/" target="_blank">GitHub</a>.
       </p>
+    </div>
+  </main>
+
+  <!-- Friends View -->
+  <main class="view" id="view-friends">
+    <div class="about-content post-body">
+      <h1>友情链接</h1>
+      <ul>
+        <li><a href="https://www.ideasworthdoing.org/create/startbucks-1999" target="_blank">Dave Lim</a></li>
+      </ul>
     </div>
   </main>
 
@@ -518,6 +529,10 @@ function showView(name, slug) {
     document.getElementById('view-about').classList.add('active');
     document.getElementById('nav-about').classList.add('active');
     history.pushState({}, '', '#about');
+  } else if (name === 'friends') {
+    document.getElementById('view-friends').classList.add('active');
+    document.getElementById('nav-friends').classList.add('active');
+    history.pushState({}, '', '#friends');
   }
 }
 
@@ -752,6 +767,8 @@ function routeFromHash() {
     showView('list');
   } else if (hash === 'about') {
     showView('about');
+  } else if (hash === 'friends') {
+    showView('friends');
   } else {
     showView('post', hash);
   }
