@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,8 +12,15 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
+    @import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css');
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --ink: #1a1a18;
@@ -24,12 +32,14 @@
       --accent: #c0392b;
       --accent-soft: #e8d5d2;
       --max: 680px;
-      --mono: 'JetBrains Mono', monospace;
-      --serif: 'Lora', Georgia, serif;
-      --sans: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', 'LXGW WenKai', monospace;
+      --serif: 'Lora', 'LXGW WenKai', Georgia, serif;
+      --sans: 'Inter', 'LXGW WenKai', sans-serif;
     }
 
-    html { font-size: 18px; }
+    html {
+      font-size: 18px;
+    }
 
     body {
       font-family: var(--serif);
@@ -67,7 +77,9 @@
       cursor: pointer;
     }
 
-    .site-name:hover { color: var(--accent); }
+    .site-name:hover {
+      color: var(--accent);
+    }
 
     .site-tagline {
       font-family: var(--serif);
@@ -95,14 +107,24 @@
       transition: color 0.15s;
     }
 
-    .nav-link:hover, .nav-link.active { color: var(--accent); }
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--accent);
+    }
 
     /* ── Page views ── */
-    .view { display: none; }
-    .view.active { display: block; }
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
 
     /* ── Post list ── */
-    .post-list { list-style: none; }
+    .post-list {
+      list-style: none;
+    }
 
     .post-item {
       padding: 2rem 0;
@@ -112,10 +134,15 @@
       animation: fadeUp 0.4s forwards;
     }
 
-    .post-item:first-child { padding-top: 0; }
+    .post-item:first-child {
+      padding-top: 0;
+    }
 
     @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .post-meta {
@@ -168,7 +195,9 @@
       transition: color 0.15s;
     }
 
-    .post-title-link:hover .post-title { color: var(--accent); }
+    .post-title-link:hover .post-title {
+      color: var(--accent);
+    }
 
     .post-description {
       font-family: var(--sans);
@@ -189,10 +218,15 @@
       transition: opacity 0.15s;
     }
 
-    .read-more:hover { opacity: 0.7; }
+    .read-more:hover {
+      opacity: 0.7;
+    }
 
     /* ── Post content ── */
-    .post-full { animation: fadeUp 0.3s forwards; opacity: 0; }
+    .post-full {
+      animation: fadeUp 0.3s forwards;
+      opacity: 0;
+    }
 
     .post-full-header {
       padding-bottom: 2rem;
@@ -226,7 +260,9 @@
     }
 
     /* ── Markdown content styles ── */
-    .post-body { font-size: 1rem; }
+    .post-body {
+      font-size: 1rem;
+    }
 
     .post-body h2 {
       font-family: var(--serif);
@@ -246,22 +282,32 @@
       color: var(--ink-soft);
     }
 
-    .post-body p { margin-bottom: 1.4rem; }
+    .post-body p {
+      margin-bottom: 1.4rem;
+    }
 
-    .post-body a { color: var(--accent); text-underline-offset: 3px; }
+    .post-body a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+    }
 
     .post-body strong {
       font-weight: 500;
       color: var(--ink);
     }
 
-    .post-body em { font-style: italic; }
+    .post-body em {
+      font-style: italic;
+    }
 
-    .post-body ul, .post-body ol {
+    .post-body ul,
+    .post-body ol {
       margin: 0 0 1.4rem 1.5rem;
     }
 
-    .post-body li { margin-bottom: 0.3rem; }
+    .post-body li {
+      margin-bottom: 0.3rem;
+    }
 
     .post-body blockquote {
       margin: 2rem 0;
@@ -322,9 +368,13 @@
       padding: 0;
     }
 
-    .back-btn:hover { color: var(--accent); }
+    .back-btn:hover {
+      color: var(--accent);
+    }
 
-    .back-btn::before { content: '←'; }
+    .back-btn::before {
+      content: '←';
+    }
 
     /* ── About page ── */
     .about-content {
@@ -344,7 +394,10 @@
       margin-bottom: 1.2rem;
     }
 
-    .about-content a { color: var(--accent); text-underline-offset: 3px; }
+    .about-content a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+    }
 
     /* ── Footer ── */
     .site-footer {
@@ -377,7 +430,9 @@
       transition: color 0.15s;
     }
 
-    .footer-link:hover { color: var(--accent); }
+    .footer-link:hover {
+      color: var(--accent);
+    }
 
     /* ── Loading / Error ── */
     .loading {
@@ -402,295 +457,329 @@
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     /* ── Mobile ── */
     @media (max-width: 600px) {
-      html { font-size: 16px; }
-      .site-header { padding: 2.5rem 0 2rem; }
-      .post-full-title { font-size: 1.6rem; }
+      html {
+        font-size: 16px;
+      }
+
+      .site-header {
+        padding: 2.5rem 0 2rem;
+      }
+
+      .post-full-title {
+        font-size: 1.6rem;
+      }
     }
 
     /* ── Stagger animations ── */
-    .post-item:nth-child(1) { animation-delay: 0.05s; }
-    .post-item:nth-child(2) { animation-delay: 0.1s; }
-    .post-item:nth-child(3) { animation-delay: 0.15s; }
-    .post-item:nth-child(4) { animation-delay: 0.2s; }
-    .post-item:nth-child(5) { animation-delay: 0.25s; }
-    .post-item:nth-child(n+6) { animation-delay: 0.3s; }
+    .post-item:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    .post-item:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .post-item:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+
+    .post-item:nth-child(4) {
+      animation-delay: 0.2s;
+    }
+
+    .post-item:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+
+    .post-item:nth-child(n+6) {
+      animation-delay: 0.3s;
+    }
   </style>
 </head>
+
 <body>
 
-<div class="site-wrap">
+  <div class="site-wrap">
 
-  <!-- Header -->
-  <header class="site-header">
-    <a class="site-name" onclick="showView('list')">Jero Hao</a>
-    <p class="site-tagline">Notes on building things.</p>
-    <nav class="site-nav">
-      <a class="nav-link active" id="nav-writing" onclick="showView('list')">Writing</a>
-      <a class="nav-link" id="nav-about" onclick="showView('about')">About</a>
-      <a class="nav-link" id="nav-friends" onclick="showView('friends')">友情链接</a>
-    </nav>
-  </header>
+    <!-- Header -->
+    <header class="site-header">
+      <a class="site-name" onclick="showView('list')">Jero Hao</a>
+      <p class="site-tagline">Notes on building things.</p>
+      <nav class="site-nav">
+        <a class="nav-link active" id="nav-writing" onclick="showView('list')">Writing</a>
+        <a class="nav-link" id="nav-about" onclick="showView('about')">About</a>
+        <a class="nav-link" id="nav-friends" onclick="showView('friends')">友情链接</a>
+      </nav>
+    </header>
 
-  <!-- Post List View -->
-  <main class="view active" id="view-list">
-    <div id="post-list-container">
-      <p class="loading">Loading posts</p>
-    </div>
-  </main>
+    <!-- Post List View -->
+    <main class="view active" id="view-list">
+      <div id="post-list-container">
+        <p class="loading">Loading posts</p>
+      </div>
+    </main>
 
-  <!-- Post Detail View -->
-  <main class="view" id="view-post">
-    <button class="back-btn" onclick="showView('list')">All posts</button>
-    <article class="post-full" id="post-full-content"></article>
-  </main>
+    <!-- Post Detail View -->
+    <main class="view" id="view-post">
+      <button class="back-btn" onclick="showView('list')">All posts</button>
+      <article class="post-full" id="post-full-content"></article>
+    </main>
 
-  <!-- About View -->
-  <main class="view" id="view-about">
-    <div class="about-content">
-      <h1>About</h1>
-      <p>
-        I'm a software engineer writing about the things I'm building, learning, and thinking about.
-      </p>
-      <p>
-        This blog is a place for long-form notes — not announcements, not tutorials optimized for SEO, just thinking out loud.
-      </p>
-      <p>
-        You can find me on <a href="https://github.com/" target="_blank">GitHub</a>.
-      </p>
-    </div>
-  </main>
+    <!-- About View -->
+    <main class="view" id="view-about">
+      <div class="about-content">
+        <h1>About</h1>
+        <p>
+          I'm a software engineer writing about the things I'm building, learning, and thinking about.
+        </p>
+        <p>
+          This blog is a place for long-form notes — not announcements, not tutorials optimized for SEO, just thinking
+          out loud.
+        </p>
+        <p>
+          You can find me on <a href="https://github.com/" target="_blank">GitHub</a>.
+        </p>
+      </div>
+    </main>
 
-  <!-- Friends View -->
-  <main class="view" id="view-friends">
-    <div class="about-content post-body">
-      <h1>友情链接</h1>
-      <ul>
-        <li><a href="https://www.ideasworthdoing.org/create/startbucks-1999" target="_blank">Dave Lim</a></li>
-      </ul>
-    </div>
-  </main>
+    <!-- Friends View -->
+    <main class="view" id="view-friends">
+      <div class="about-content post-body">
+        <h1>友情链接</h1>
+        <ul>
+          <li><a href="https://www.ideasworthdoing.org/create/startbucks-1999" target="_blank">Dave Lim</a></li>
+        </ul>
+      </div>
+    </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <span class="footer-text">© <span id="year"></span> Jero Hao</span>
-    <div class="footer-links">
-      <a class="footer-link" href="https://github.com/jerohao1997" target="_blank">GitHub</a>
-      <a class="footer-link" href="/feed.xml">RSS</a>
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <span class="footer-text">© <span id="year"></span> Jero Hao</span>
+      <div class="footer-links">
+        <a class="footer-link" href="https://github.com/jerohao1997" target="_blank">GitHub</a>
+        <a class="footer-link" href="/feed.xml">RSS</a>
+      </div>
+    </footer>
 
-</div>
+  </div>
 
-<script>
-// ─────────────────────────────────────────────
-// CONFIG — edit these
-// ─────────────────────────────────────────────
-const CONFIG = {
-  siteName: "Jero Hao",
-  tagline: "Notes on building things.",
-  githubUser: "jerohao1997",
-  githubRepo: "personal-blog",
-  branch: "main",
-  // Base path: "/" for username.github.io, or "/repo-name" for project pages
-  basePath: "/personal-blog",
-};
+  <script>
+    // ─────────────────────────────────────────────
+    // CONFIG — edit these
+    // ─────────────────────────────────────────────
+    const CONFIG = {
+      siteName: "Jero Hao",
+      tagline: "Notes on building things.",
+      githubUser: "jerohao1997",
+      githubRepo: "personal-blog",
+      branch: "main",
+      // Base path: "/" for username.github.io, or "/repo-name" for project pages
+      basePath: "/personal-blog",
+    };
 
-document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-// ─────────────────────────────────────────────
-// State
-// ─────────────────────────────────────────────
-let allPosts = [];
-let currentView = 'list';
+    // ─────────────────────────────────────────────
+    // State
+    // ─────────────────────────────────────────────
+    let allPosts = [];
+    let currentView = 'list';
 
-// ─────────────────────────────────────────────
-// View management
-// ─────────────────────────────────────────────
-function showView(name, slug) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    // ─────────────────────────────────────────────
+    // View management
+    // ─────────────────────────────────────────────
+    function showView(name, slug) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
 
-  if (name === 'list') {
-    document.getElementById('view-list').classList.add('active');
-    document.getElementById('nav-writing').classList.add('active');
-    history.pushState({}, '', CONFIG.basePath || '/');
-  } else if (name === 'post' && slug) {
-    document.getElementById('view-post').classList.add('active');
-    document.getElementById('nav-writing').classList.add('active');
-    history.pushState({}, '', `#${slug}`);
-    loadPost(slug);
-  } else if (name === 'about') {
-    document.getElementById('view-about').classList.add('active');
-    document.getElementById('nav-about').classList.add('active');
-    history.pushState({}, '', '#about');
-  } else if (name === 'friends') {
-    document.getElementById('view-friends').classList.add('active');
-    document.getElementById('nav-friends').classList.add('active');
-    history.pushState({}, '', '#friends');
-  }
-}
-
-// ─────────────────────────────────────────────
-// Markdown front matter parser
-// ─────────────────────────────────────────────
-function parseFrontMatter(raw) {
-  const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
-  if (!match) return { meta: {}, body: raw };
-
-  const meta = {};
-  match[1].split('\n').forEach(line => {
-    const [key, ...rest] = line.split(':');
-    if (!key) return;
-    let val = rest.join(':').trim();
-    // Parse arrays like [a, b, c] or ["a", "b"]
-    if (val.startsWith('[')) {
-      val = val.slice(1, -1).split(',').map(s => s.trim().replace(/['"]/g, ''));
-    }
-    meta[key.trim()] = val;
-  });
-
-  return { meta, body: match[2].trim() };
-}
-
-// ─────────────────────────────────────────────
-// Format date
-// ─────────────────────────────────────────────
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
-// ─────────────────────────────────────────────
-// Estimate reading time
-// ─────────────────────────────────────────────
-function readingTime(text) {
-  const words = text.trim().split(/\s+/).length;
-  const mins = Math.max(1, Math.round(words / 200));
-  return `${mins} min read`;
-}
-
-// ─────────────────────────────────────────────
-// Fetch posts list — tries 3 strategies in order
-// ─────────────────────────────────────────────
-async function fetchPostsList() {
-  const log = (msg) => console.log('[blog]', msg);
-
-  // 1. GitHub Contents API
-  const apiUrl = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.githubRepo}/contents/posts?ref=${CONFIG.branch}`;
-  log('Trying GitHub API: ' + apiUrl);
-  try {
-    const res = await fetch(apiUrl);
-    log('GitHub API status: ' + res.status);
-    if (res.ok) {
-      const files = await res.json();
-      if (Array.isArray(files)) {
-        const names = files.filter(f => f.name.endsWith('.md')).map(f => f.name).sort().reverse();
-        log('GitHub API found: ' + names.join(', '));
-        return names;
-      } else {
-        log('GitHub API non-array response: ' + JSON.stringify(files).slice(0, 300));
+      if (name === 'list') {
+        document.getElementById('view-list').classList.add('active');
+        document.getElementById('nav-writing').classList.add('active');
+        history.pushState({}, '', CONFIG.basePath || '/');
+      } else if (name === 'post' && slug) {
+        document.getElementById('view-post').classList.add('active');
+        document.getElementById('nav-writing').classList.add('active');
+        history.pushState({}, '', `#${slug}`);
+        loadPost(slug);
+      } else if (name === 'about') {
+        document.getElementById('view-about').classList.add('active');
+        document.getElementById('nav-about').classList.add('active');
+        history.pushState({}, '', '#about');
+      } else if (name === 'friends') {
+        document.getElementById('view-friends').classList.add('active');
+        document.getElementById('nav-friends').classList.add('active');
+        history.pushState({}, '', '#friends');
       }
     }
-  } catch (e) { log('GitHub API error: ' + e.message); }
 
-  // 2. posts/index.json
-  const indexUrl = `${window.location.origin}${CONFIG.basePath || ''}/posts/index.json`;
-  log('Trying index.json: ' + indexUrl);
-  try {
-    const res = await fetch(indexUrl);
-    log('index.json status: ' + res.status);
-    if (res.ok) {
-      const text = await res.text();
-      log('index.json raw: ' + text.slice(0, 300));
-      const data = JSON.parse(text);
-      return data.posts || [];
-    }
-  } catch (e) { log('index.json error: ' + e.message); }
+    // ─────────────────────────────────────────────
+    // Markdown front matter parser
+    // ─────────────────────────────────────────────
+    function parseFrontMatter(raw) {
+      const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+      if (!match) return { meta: {}, body: raw };
 
-  // 3. Hard-coded fallback
-  log('Using hard-coded fallback list');
-  return [
-    '2024-03-20-the-80-percent-problem.md',
-    '2024-02-03-writing-documentation.md',
-    '2024-01-15-hello-world.md',
-  ];
-}
+      const meta = {};
+      match[1].split('\n').forEach(line => {
+        const [key, ...rest] = line.split(':');
+        if (!key) return;
+        let val = rest.join(':').trim();
+        // Parse arrays like [a, b, c] or ["a", "b"]
+        if (val.startsWith('[')) {
+          val = val.slice(1, -1).split(',').map(s => s.trim().replace(/['"]/g, ''));
+        }
+        meta[key.trim()] = val;
+      });
 
-// ─────────────────────────────────────────────
-// Fetch a single post markdown file
-// ─────────────────────────────────────────────
-async function fetchPostMd(filename) {
-  const origin = window.location.origin;
-  const base = CONFIG.basePath || '';
-  const res = await fetch(`${origin}${base}/posts/${filename}`);
-  if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
-  return res.text();
-}
-
-// ─────────────────────────────────────────────
-// Load and render post list
-// ─────────────────────────────────────────────
-async function loadPostList() {
-  const container = document.getElementById('post-list-container');
-
-  // DEBUG — remove once posts are showing
-  const debug = (msg, isErr) => {
-    const el = document.createElement('p');
-    el.style.cssText = 'font-family:monospace;font-size:12px;margin:4px 0;color:' + (isErr ? '#c0392b' : '#888');
-    el.textContent = msg;
-    container.appendChild(el);
-  };
-  container.innerHTML = '<p style="font-family:monospace;font-size:12px;color:#888">Debug log:</p>';
-
-  debug('origin: ' + window.location.origin);
-  debug('basePath: ' + CONFIG.basePath);
-  debug('githubUser: ' + CONFIG.githubUser);
-  debug('githubRepo: ' + CONFIG.githubRepo);
-
-  try {
-    const filenames = await fetchPostsList();
-    const posts = await Promise.all(
-      filenames.map(async filename => {
-        try {
-          const raw = await fetchPostMd(filename);
-          const { meta, body } = parseFrontMatter(raw);
-          const slug = filename.replace('.md', '');
-          return { slug, filename, meta, body, raw };
-        } catch { return null; }
-      })
-    );
-
-    allPosts = posts
-      .filter(Boolean)
-      .sort((a, b) => new Date(b.meta.date) - new Date(a.meta.date));
-
-    debug(`fetchPostsList returned ${filenames.length} filenames`);
-    debug(`Successfully loaded ${allPosts.length} posts`);
-
-    if (allPosts.length === 0) {
-      container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">No posts yet. Check browser console (F12) for debug logs.</p>`;
-      return;
+      return { meta, body: match[2].trim() };
     }
 
-    const ul = document.createElement('ul');
-    ul.className = 'post-list';
+    // ─────────────────────────────────────────────
+    // Format date
+    // ─────────────────────────────────────────────
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
 
-    allPosts.forEach(post => {
-      const li = document.createElement('li');
-      li.className = 'post-item';
+    // ─────────────────────────────────────────────
+    // Estimate reading time
+    // ─────────────────────────────────────────────
+    function readingTime(text) {
+      const words = text.trim().split(/\s+/).length;
+      const mins = Math.max(1, Math.round(words / 200));
+      return `${mins} min read`;
+    }
 
-      const tagsHtml = Array.isArray(post.meta.tags)
-        ? post.meta.tags.map(t => `<span class="tag">${t}</span>`).join('')
-        : '';
+    // ─────────────────────────────────────────────
+    // Fetch posts list — tries 3 strategies in order
+    // ─────────────────────────────────────────────
+    async function fetchPostsList() {
+      const log = (msg) => console.log('[blog]', msg);
 
-      li.innerHTML = `
+      // 1. GitHub Contents API
+      const apiUrl = `https://api.github.com/repos/${CONFIG.githubUser}/${CONFIG.githubRepo}/contents/posts?ref=${CONFIG.branch}`;
+      log('Trying GitHub API: ' + apiUrl);
+      try {
+        const res = await fetch(apiUrl);
+        log('GitHub API status: ' + res.status);
+        if (res.ok) {
+          const files = await res.json();
+          if (Array.isArray(files)) {
+            const names = files.filter(f => f.name.endsWith('.md')).map(f => f.name).sort().reverse();
+            log('GitHub API found: ' + names.join(', '));
+            return names;
+          } else {
+            log('GitHub API non-array response: ' + JSON.stringify(files).slice(0, 300));
+          }
+        }
+      } catch (e) { log('GitHub API error: ' + e.message); }
+
+      // 2. posts/index.json
+      const indexUrl = `${window.location.origin}${CONFIG.basePath || ''}/posts/index.json`;
+      log('Trying index.json: ' + indexUrl);
+      try {
+        const res = await fetch(indexUrl);
+        log('index.json status: ' + res.status);
+        if (res.ok) {
+          const text = await res.text();
+          log('index.json raw: ' + text.slice(0, 300));
+          const data = JSON.parse(text);
+          return data.posts || [];
+        }
+      } catch (e) { log('index.json error: ' + e.message); }
+
+      // 3. Hard-coded fallback
+      log('Using hard-coded fallback list');
+      return [
+        '2024-03-20-the-80-percent-problem.md',
+        '2024-02-03-writing-documentation.md',
+        '2024-01-15-hello-world.md',
+      ];
+    }
+
+    // ─────────────────────────────────────────────
+    // Fetch a single post markdown file
+    // ─────────────────────────────────────────────
+    async function fetchPostMd(filename) {
+      const origin = window.location.origin;
+      const base = CONFIG.basePath || '';
+      const res = await fetch(`${origin}${base}/posts/${filename}`);
+      if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
+      return res.text();
+    }
+
+    // ─────────────────────────────────────────────
+    // Load and render post list
+    // ─────────────────────────────────────────────
+    async function loadPostList() {
+      const container = document.getElementById('post-list-container');
+
+      // DEBUG — remove once posts are showing
+      const debug = (msg, isErr) => {
+        const el = document.createElement('p');
+        el.style.cssText = 'font-family:monospace;font-size:12px;margin:4px 0;color:' + (isErr ? '#c0392b' : '#888');
+        el.textContent = msg;
+        container.appendChild(el);
+      };
+      container.innerHTML = '<p style="font-family:monospace;font-size:12px;color:#888">Debug log:</p>';
+
+      debug('origin: ' + window.location.origin);
+      debug('basePath: ' + CONFIG.basePath);
+      debug('githubUser: ' + CONFIG.githubUser);
+      debug('githubRepo: ' + CONFIG.githubRepo);
+
+      try {
+        const filenames = await fetchPostsList();
+        const posts = await Promise.all(
+          filenames.map(async filename => {
+            try {
+              const raw = await fetchPostMd(filename);
+              const { meta, body } = parseFrontMatter(raw);
+              const slug = filename.replace('.md', '');
+              return { slug, filename, meta, body, raw };
+            } catch { return null; }
+          })
+        );
+
+        allPosts = posts
+          .filter(Boolean)
+          .sort((a, b) => new Date(b.meta.date) - new Date(a.meta.date));
+
+        debug(`fetchPostsList returned ${filenames.length} filenames`);
+        debug(`Successfully loaded ${allPosts.length} posts`);
+
+        if (allPosts.length === 0) {
+          container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">No posts yet. Check browser console (F12) for debug logs.</p>`;
+          return;
+        }
+
+        const ul = document.createElement('ul');
+        ul.className = 'post-list';
+
+        allPosts.forEach(post => {
+          const li = document.createElement('li');
+          li.className = 'post-item';
+
+          const tagsHtml = Array.isArray(post.meta.tags)
+            ? post.meta.tags.map(t => `<span class="tag">${t}</span>`).join('')
+            : '';
+
+          li.innerHTML = `
         <div class="post-meta">
           <span>${formatDate(post.meta.date)}</span>
           ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
@@ -702,47 +791,47 @@ async function loadPostList() {
         <a class="read-more" onclick="showView('post', '${post.slug}')">Read → ${readingTime(post.body)}</a>
       `;
 
-      ul.appendChild(li);
-    });
+          ul.appendChild(li);
+        });
 
-    container.innerHTML = '';
-    container.appendChild(ul);
+        container.innerHTML = '';
+        container.appendChild(ul);
 
-  } catch (err) {
-    container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">Could not load posts. ${err.message}</p>`;
-  }
-}
-
-// ─────────────────────────────────────────────
-// Load and render single post
-// ─────────────────────────────────────────────
-async function loadPost(slug) {
-  const container = document.getElementById('post-full-content');
-  container.innerHTML = '<p class="loading">Loading</p>';
-
-  // Find from cache
-  let post = allPosts.find(p => p.slug === slug);
-
-  if (!post) {
-    try {
-      const filename = `${slug}.md`;
-      const raw = await fetchPostMd(filename);
-      const { meta, body } = parseFrontMatter(raw);
-      post = { slug, filename, meta, body, raw };
-    } catch {
-      container.innerHTML = '<p style="color:var(--ink-faint)">Post not found.</p>';
-      return;
+      } catch (err) {
+        container.innerHTML = `<p style="color:var(--ink-faint);font-family:var(--mono);font-size:0.8rem;">Could not load posts. ${err.message}</p>`;
+      }
     }
-  }
 
-  const tagsHtml = Array.isArray(post.meta.tags)
-    ? post.meta.tags.map(t => `<span class="tag">${t}</span>`).join('')
-    : '';
+    // ─────────────────────────────────────────────
+    // Load and render single post
+    // ─────────────────────────────────────────────
+    async function loadPost(slug) {
+      const container = document.getElementById('post-full-content');
+      container.innerHTML = '<p class="loading">Loading</p>';
 
-  const bodyHtml = marked.parse(post.body);
+      // Find from cache
+      let post = allPosts.find(p => p.slug === slug);
 
-  container.className = 'post-full';
-  container.innerHTML = `
+      if (!post) {
+        try {
+          const filename = `${slug}.md`;
+          const raw = await fetchPostMd(filename);
+          const { meta, body } = parseFrontMatter(raw);
+          post = { slug, filename, meta, body, raw };
+        } catch {
+          container.innerHTML = '<p style="color:var(--ink-faint)">Post not found.</p>';
+          return;
+        }
+      }
+
+      const tagsHtml = Array.isArray(post.meta.tags)
+        ? post.meta.tags.map(t => `<span class="tag">${t}</span>`).join('')
+        : '';
+
+      const bodyHtml = marked.parse(post.body);
+
+      container.className = 'post-full';
+      container.innerHTML = `
     <header class="post-full-header">
       <div class="post-full-meta">
         <span>${formatDate(post.meta.date)}</span>
@@ -755,34 +844,35 @@ async function loadPost(slug) {
     <div class="post-body">${bodyHtml}</div>
   `;
 
-  window.scrollTo(0, 0);
-}
+      window.scrollTo(0, 0);
+    }
 
-// ─────────────────────────────────────────────
-// Handle hash-based routing
-// ─────────────────────────────────────────────
-function routeFromHash() {
-  const hash = window.location.hash.slice(1);
-  if (!hash || hash === '/') {
-    showView('list');
-  } else if (hash === 'about') {
-    showView('about');
-  } else if (hash === 'friends') {
-    showView('friends');
-  } else {
-    showView('post', hash);
-  }
-}
+    // ─────────────────────────────────────────────
+    // Handle hash-based routing
+    // ─────────────────────────────────────────────
+    function routeFromHash() {
+      const hash = window.location.hash.slice(1);
+      if (!hash || hash === '/') {
+        showView('list');
+      } else if (hash === 'about') {
+        showView('about');
+      } else if (hash === 'friends') {
+        showView('friends');
+      } else {
+        showView('post', hash);
+      }
+    }
 
-window.addEventListener('popstate', routeFromHash);
+    window.addEventListener('popstate', routeFromHash);
 
-// ─────────────────────────────────────────────
-// Init
-// ─────────────────────────────────────────────
-loadPostList().then(() => {
-  routeFromHash();
-});
-</script>
+    // ─────────────────────────────────────────────
+    // Init
+    // ─────────────────────────────────────────────
+    loadPostList().then(() => {
+      routeFromHash();
+    });
+  </script>
 
 </body>
+
 </html>
